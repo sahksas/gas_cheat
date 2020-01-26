@@ -17,6 +17,7 @@
   - [条件分岐](#条件分岐)
   - [繰り返し(for)](#繰り返し(for))
   - [繰り返し(while)](#繰り返し(while))
+  - [メッセージボックス表示](#メッセージボックス表示)
 - [スプレッドシート操作全般](#スプレッドシート操作全般)
   - [スプレッドシートを開く](#スプレッドシートを開く)
   - [AppScriptに紐付くスプレッドシートを取得する](#AppScriptに紐付くスプレッドシートを取得する)
@@ -346,6 +347,41 @@ function while_test(){
 「while」の後に「()」内に記載した条件に一致する間は、その後の「{}」で囲まれたコードを実行する。
 
 「{}」内のコード中にインクリメント等を入れて、比較条件内の結果に変化が起こることが期待されるような作りにしないと、無限ループの原因となる。
+
+## メッセージボックス表示
+```js
+//通常表示
+function message_test(){
+  Browser.msgBox('メッセージ');
+}
+//OK、キャンセル選択
+function okcansel_test(){
+  var okcansel = Browser.msgBox('OKかキャンセルを選んでください', Browser.Buttons.OK_CANCEL);
+  if (okcansel == 'ok'){
+    //'OK'の処理
+  } else if(okcansel == 'cansel') {
+    //'キャンセルの処理'
+  }
+}
+//テキスト入力
+function inputtext_test(){
+  var inputtext = Browser.inputBox("あいさつを入力してください");
+  if (inputtext == 'おはよう'){
+    Browser.msgBox('Good morning');
+  } else if(inputtext == 'こんにちは') {
+    Browser.msgBox('Hello');
+  } else if(inputtext == 'こんばんは') {
+    Browser.msgBox('Good evening');
+  } else {
+    Browser.msgBox('入力が無効です');
+  }
+}
+```
+単純に画面に文字を表示させたいだけなら'msgBox'で可能。
+押下したボタンで分岐させたい場合は、引数に'Browser.Buttons.OK_CANCEL'を追加。
+画面で押下したボタンが'ok','cansel'で返ってくるので、それを元に分岐が可能。
+ユーザーに入力を求め、それを値として使う場合は'inputBox'を使う。
+何も入力せずにOKを押した場合、空のテキストが返る。
 
 # スプレッドシート操作全般
 ```js
