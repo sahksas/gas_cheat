@@ -1,4 +1,5 @@
 # 一覧
+
 - [使い方](#使い方)
 - [基本](#基本)
   - [Log出力](#Log出力)
@@ -49,6 +50,9 @@
   - [スライドを開く](#スライドを開く)
   - [全スライドを配列で取得](#全スライドを配列で取得)
   - [スライド内のエレメントを配列で取得](#スライド内のエレメントを配列で取得)
+- [メール操作全般](#メール操作全般)
+  - [メール下書き作成](#メール下書き作成)
+  - [メール送信](#メール送信)
 - [その他参考記事](#その他参考記事)
   - [フォルダごとコピー](#フォルダごとコピー)
 
@@ -747,6 +751,51 @@ var slides = slide_file.getSlides();
 var slide = slides[0]; //1ページ目のスライド
 var pageElements = slide.getPageElements();
 ```
+
+# メール操作全般
+```js
+function mail_test(){
+  const to_address = 'hogehoge@hoge.hoge';
+  const title = 'あけおめ';
+  const text = '昨年はお世話になりました。\n今年もよろしくね～';
+  const cc_address = 'hugahuga@hugahuga.huga,piyopiyo@piyopiyo.piyo';
+  const bcc_address = 'hagehage@hagehage.hage';
+
+  GmailApp.createDraft(to_address,title,text,{cc:cc_address,bcc:bcc_address}); // 下書き
+  GmailApp.sendEmail(to_address,title,text,{cc:cc_address,bcc:bcc_address}); //送信
+}
+```
+
+## メール下書き作成
+```js
+const to_address = 'hogehoge@hoge.hoge';
+const title = 'あけおめ';
+const text = '昨年はお世話になりました。\n今年もよろしくね～';
+const cc_address = 'hugahuga@hugahuga.huga,piyopiyo@piyopiyo.piyo';
+const bcc_address = 'hagehage@hagehage.hage';
+GmailApp.createDraft(to_address,title,text,{cc:cc_address,bcc:bcc_address});
+// | To      | hogehoge@hoge.hoge     |
+// | CC      | hugahuga@huga.huga     |
+// |         | piyopiyo@piyo.piyo     |
+// | BCC     | hagehage@hage.hage     |
+// | :------ | :--------------------- |
+// | Title   | あけおめ                |
+// | Text    | 昨年はお世話になりました |
+// |         | 今年もよろしくね～      |
+```
+引数は「送信先」「タイトル」「本文」「パラメータ」の順。
+パラメータの中に、辞書型でCC、BCCをカンマ区切りで指定可能。
+
+## メール送信
+```js
+const to_address = 'hogehoge@hoge.hoge';
+const title = 'あけおめ';
+const text = '昨年はお世話になりました。\n今年もよろしくね～';
+const cc_address = 'hugahuga@hugahuga.huga,piyopiyo@piyopiyo.piyo';
+const bcc_address = 'hagehage@hagehage.hage';
+GmailApp.sendEmail(to_address,title,text,{cc:cc_address,bcc:bcc_address});
+```
+関数名が「sendEmail」に変わるだけ。
 
 # その他参考記事
 少々長いコードになるが、やっていることは概ねここまでで説明した関数を組み合わせたもの。
